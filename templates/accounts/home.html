@@ -1,0 +1,33 @@
+<!--
+    File Name		: home.html
+    Version		    : V1.1
+    Designer		: 和合雅輝
+    Date			: 2021.06.08
+    Purpose       	: ホーム画面
+
+    Revision :
+    V1.0 : 和合雅輝, 2021.06.08
+    V1.1 : 平澤巧望, 2021.06.08, ログインの有無によるメッセージの変更を追加
+-->
+
+
+{% extends 'base.html' %}
+{% block content %}
+    {% if user.is_authenticated %}
+        {% for login_user in object_list  %}
+            <h3 style="text-align:right">UserName: <b>{{ login_user.username }}</b> さん</h3>
+        {% endfor %}
+        <h2>ディスカッションを開始するには…</h2>
+        <p>
+            早速ディスカッションを開始しましょう！<br>
+            すでに作成されているチャットルームに入室するには［チャットルーム入室］，<br>
+            チャットルームをこれから作成する場合は［チャットルーム作成］を上のメニューから選択してください．
+        </p>
+    {% else %}
+    <h2>オンラインディスカッション支援システムへようこそ！</h2>
+    <p>
+        システムの利用を開始するには，上のメニューから［ログイン］を選択してください．<br>
+        初めての方は，［ユーザ登録］よりユーザ登録をお願いします．
+    </p>
+    {% endif %}
+{% endblock %}

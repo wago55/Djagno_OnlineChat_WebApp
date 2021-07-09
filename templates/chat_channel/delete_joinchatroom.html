@@ -1,0 +1,25 @@
+<!--
+    File Name		: delete_joinchatroom.html
+    Version		    : V1.1
+    Designer		: 松岡修平
+    Date			: 2021.06.15
+    Purpose       	: 重複したレコードの削除
+
+    Revision :
+    V1.0 : 松岡修平,2021.06.15
+-->
+{% extends "base.html" %}
+{% block content %}
+<p>※以下のレコードを削除します</p>
+<table class="table">
+    <tr><th>ルームID</th><td>{{data.room_id}}</td></tr>
+    <tr><th>部屋名</th><td>{{data.room_name}}</td></tr>
+    <tr><th>名前</th><td>{{data.username}}</td></tr>
+    <form action ="{% url 'chat_channel:delete_joinchatroom' data.id %}" method="post">
+        {% csrf_token %} 
+        <tr><th></th><td>
+        <input type="submit" value="click" class="btn btn-primary">
+        </td></tr>
+    </form>
+</table>
+{% endblock %}

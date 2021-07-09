@@ -1,0 +1,25 @@
+<!--
+    File Name		: regist_user.html
+    Version		    : V1.1
+    Designer		: 和合雅輝
+    Date			: 2021.06.08
+    Purpose       	: ユーザ登録画面
+
+    Revision :
+    V1.0 : 和合雅輝, 2021.06.08
+    V1.1 : 平澤巧望, 2021.06.08, 本文追加
+-->
+
+
+{% extends 'base.html' %}
+{% block content %}
+    <h2>ユーザ登録</h2>
+    <p>
+        以下に必要事項を入力の上，［ユーザ登録］をクリックしてください．
+    </p>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+          <input type="submit" value="ユーザ登録">
+        </form>
+{% endblock %}

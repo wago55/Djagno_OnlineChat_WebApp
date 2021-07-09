@@ -1,0 +1,402 @@
+<!--
+    File Name		: chat.html
+    Version		    : V1.1
+    Designer		: 和合雅輝
+    Date			: 2021.06.08
+    Purpose       	: チャットルーム画面
+
+    Revision :
+    V1.0 : 和合雅輝, 2021.06.08
+    V1.1 : 平澤巧望, 2021.06.08, base.htmlの適用
+    v2.0 : 平澤巧望, 2021.06.12, チャットルーム認証機能に対応
+    V2.1 : 松岡修平, 2021.06.15, chat_room_detail.htmlに対応
+    V2.2 : 平澤巧望, 2021.06.20, テンプレート文送信機能と投票機能の実装
+    V2.3 : 松岡修平, 2021.06.20, 司会者決定機能の追加
+-->
+
+
+{% extends 'base.html' %}
+
+<!--
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>My Chat</title>
+
+    <style type="text/css">
+        input:read-only, textarea:read-only {
+            background-color: #CCC;
+        }
+
+        html {
+            height: 100%; /* 画面全体を使用する場合のお約束 */
+        }
+
+        body {
+            margin: 0; /* 画面全体を使用する場合のお約束 */
+            padding: 0; /* 画面全体を使用する場合のお約束 */
+            min-height: 100%; /* 画面全体を使用する場合のお約束 */
+            height: 100%; /* 画面全体を使用する場合のお約束 */
+        }
+
+        #div_container {
+            min-height: 100vh; /* 画面全体を使用する場合のお約束 */
+            height: 100%; /* 画面全体を使用する場合のお約束 */
+            display: flex; /* 子要素をflex配置とする */
+            flex-direction: column; /* 子要素のflex配置の方向は列方向（縦方向）*/
+        }
+
+        #div_header {
+            margin: 0px 8px; /* bodyで「margin: 0」にしたのを戻す（ブラウザ領域境界に余白なしでHTML要素が表示されるのを余白ありに戻す） */
+        }
+
+        #div_main {
+            flex: 1; /*親要素の（縦方向の）残り全部を使う*/
+        }
+
+        #div_join_screen {
+            width: 100%; /*親要素(#div_main)の（縦方向の）全部を使う*/
+            height: 100%; /*親要素(#div_main)の（縦方向の）全部を使う*/
+            display: flex; /* 子要素をflex配置とする */
+            align-items: center; /*子要素を上下中央揃えとする。「display: flex」必要*/
+            z-index: 10;
+            background-color: #888;
+        }
+
+        #div_chat_screen {
+            margin: 0px 8px; /* bodyで「margin: 0」にしたのを戻す（ブラウザ領域境界に余白なしでHTML要素が表示されるのを余白ありに戻す） */
+            display: none; /* 初期状態非表示 */
+        }
+    </style>
+</head>
+<body>
+-->
+
+{% block content %}
+
+    <h2>{{ room_name }}</h2>
+    
+
+    <div id="div_container">
+
+        <!--<div id="div_header">
+        <h2>My Chat</h2>
+        </div>
+        -->
+        
+        <div id="div_main">
+
+            <div id="div_join_screen">
+                <p>
+                    チャットルーム「{{ room_name }}」の認証に成功しました．<br>
+                    表示名とルーム名を確認の上，［チャットルーム入室］を選択してください．<br>
+                    <b>表示名は変更可能</b>です．ここに入力された表示名がチャットルーム内で表示されます．
+                </p>
+                
+                <center>
+                <form action="" onsubmit="onsubmitButton_JoinChat(); return false;" style="text-align: center; width: 100%;">
+                    Display name : 
+                    <input type="text" id="input_username" value = "{{ user_name }}" autofocus><br /><br>
+                    Room name : 
+                    <input type="text" id="input_roomname" value = "{{ room_name }}" readonly = "readonly"><br><br>
+                    <input type="submit" value="チャットルーム入室" />
+                </form>
+                </center>
+            </div>
+        
+        <!--
+            <div id="div_join_screen">
+                <!--
+                    エンターキーによるボタン押下を行うために、<button>ではなく<form>と<input type="submit">を使用。
+                    ボタン押下(=submit)時にページリロードが行われないように、onsubmitの設定の最後に"return false;"を追加。
+                
+                <form action="" onsubmit="onsubmitButton_JoinChat(); return false;" style="text-align: center; width: 100%;">
+                    User name<br />
+                    <input type="text" id="input_username" placeholder="Enter User name" autofocus><br /><br />
+                    Room name - optional<br />
+                    <input type="text" id="input_roomname" placeholder="Enter Room name"><br />
+                    Room name must be a string containing only ASCII alphanumerics, hyphens, or periods.<br /><br />
+                    <input type="submit" value="Join Chat" />
+                </form>
+            </div>
+        -->
+            <div id="div_chat_screen">
+                Display Name : <b><span id = "user_name_area"></span></b>　
+                <button onclick="onclickButton_LeaveChat()">「{{ room_name }}」を退出する</button>　
+                <button onclick="onclickButton_vote()">投票を開始／終了</button>
+                <button onclick="onclickButton_sikai()">ランダム司会者決定</button><br>
+                <br>
+{#                <a href="{% url 'chat_channel:chat_room_detail' chatroom_id %}">部屋情報参照</a>#}
+                <button type="button", onclick="room_detail()">部屋詳細ページへ</button>
+                <button type="button", onclick="Button()">時間設定</button>
+
+                <button onclick="log_out()">チャット履歴</button>
+
+                <input type="hidden" id="text_username" readonly="readonly"> <!-- ユーザ名 -->
+                <input type="hidden" id="text_roomname" readonly="readonly"><br> <!-- ルーム名 -->
+                
+                <!--
+                    エンターキーによるボタン押下を行うために、<button>ではなく<form>と<input type="submit">を使用。
+                    ボタン押下(=submit)時にページリロードが行われないように、onsubmitの設定の最後に"return false;"を追加。
+                -->
+                <form action="" onsubmit="onsubmitButton_Send(); return false;">
+                    Message : <input type="text" id="input_message" autocomplete="off" autofocus />　<input type="submit" value="Send" />
+                </form>
+                <p>
+                <button onclick="onclickButton_tmp1()">なるほど！</button>　
+                <button onclick="onclickButton_tmp2()">私もそう思います！</button>　
+                <button onclick="onclickButton_tmp3()">理解しました！</button>　
+                <button onclick="onclickButton_tmp4()">うーん…</button>　
+                <button onclick="onclickButton_tmp5()">👍</button>　
+                <button onclick="onclickButton_tmp6()">👎</button>　
+                <button onclick="onclickButton_tmp7()">✋</button>　
+                <button onclick="onclickButton_tmp8()">👏</button>　
+                <button onclick="onclickButton_tmp9()">〇</button>　
+                <button onclick="onclickButton_tmp10()">×</button>　
+                <button onclick="onclickButton_tmp11()">△</button>　
+                </p>
+
+                <ul id="list_message"></ul>
+
+            </div>
+        </div>
+    </div>
+
+    <script type = "text/javascript">
+
+        const log_data = [];
+
+        const g_elementDivJoinScreen = document.getElementById( "div_join_screen" );
+        const g_elementDivChatScreen = document.getElementById( "div_chat_screen" );
+        const g_elementInputUserName = document.getElementById( "input_username" );
+        const g_elementInputRoomName = document.getElementById( "input_roomname" );
+
+        const g_elementTextUserName = document.getElementById( "text_username" );
+        const g_elementTextRoomName = document.getElementById( "text_roomname" );
+
+        const g_elementInputMessage = document.getElementById( "input_message" );
+        const g_elementListMessage = document.getElementById( "list_message" );
+        
+        g_elementDivChatScreen.style.display = "none";  // チャット画面の非表示
+
+        // WebSocketオブジェクト
+        let ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+        const g_socket = new WebSocket( ws_scheme + "://" + window.location.host + "/ws/chat/" );
+
+{#　　　　　// 「チャットに戻る」ボタンを押すと呼ばれる関数#}
+{#       function onsubmitButton_roomdetail()#}
+{#       {#}
+{#       }#}
+
+        //タイマー
+
+        function Button() {
+            window.open("{% url 'chat_channel:timer' %}", "new",'width=500, height=300')
+        }
+　
+        //部屋詳細
+        function room_detail(){
+            window.open("{% url 'chat_channel:chat_room_detail' chatroom_id %}", "new", "width=500", "height=300")
+        }
+
+        // 「チャットルーム入室」ボタンを押すと呼ばれる関数
+        function onsubmitButton_JoinChat()
+        {
+            // ユーザー名
+            let strInputUserName = g_elementInputUserName.value;
+            if( !strInputUserName )
+            {
+                return;
+            }
+            g_elementTextUserName.value = strInputUserName;
+            document.getElementById('user_name_area').innerHTML = strInputUserName;
+
+            // ルーム名
+            let strInputRoomName = g_elementInputRoomName.value;
+            g_elementTextRoomName.value = strInputRoomName;
+
+            // サーバーに"join"を送信
+            g_socket.send( JSON.stringify( { "data_type": "join", "username": strInputUserName, "roomname": strInputRoomName } ) );
+
+            // 画面の切り替え
+            g_elementDivJoinScreen.style.display = "none";  // 参加画面の非表示
+            g_elementDivChatScreen.style.display = "block";  // チャット画面の表示
+        }
+
+
+        // 「Leave Chat.」ボタンを押すと呼ばれる関数
+        function onclickButton_LeaveChat()
+        {
+            // メッセージリストのクリア
+            while( g_elementListMessage.firstChild )
+            {
+                g_elementListMessage.removeChild( g_elementListMessage.firstChild );
+            }
+
+            // ユーザー名
+            g_elementTextUserName.value = "";
+
+            // サーバーに"leave"を送信
+            g_socket.send( JSON.stringify( { "data_type": "leave" } ) );
+
+            // 画面の切り替え
+            g_elementDivChatScreen.style.display = "none";  // チャット画面の非表示
+//            g_elementDivJoinScreen.style.display = "flex";  // 参加画面の表示
+            location.href = "../chat_room_leave/";
+        }
+
+        // 「Send」ボタンを押したときの処理
+        function onsubmitButton_Send()
+        {
+            // 送信用テキストHTML要素からメッセージ文字列の取得
+            let strMessage = g_elementInputMessage.value;
+            if( !strMessage )
+            {
+                return;
+            }
+
+            // WebSocketを通したメッセージの送信
+            g_socket.send( JSON.stringify( { "message": strMessage } ) );
+
+            // 送信用テキストHTML要素の中身のクリア
+            g_elementInputMessage.value = "";
+        }
+
+        // 「なるほど！」ボタンを押したときの処理
+        function onclickButton_tmp1()
+        {
+            // WebSocketを通したメッセージの送信
+            g_socket.send( JSON.stringify( { "message": "なるほど！" } ) );
+        }
+
+        // 「私もそう思います！」ボタンを押したときの処理
+        function onclickButton_tmp2()
+        {
+            // WebSocketを通したメッセージの送信
+            g_socket.send( JSON.stringify( { "message": "私もそう思います！" } ) );
+        }
+        
+        // 「理解しました！」ボタンを押したときの処理
+        function onclickButton_tmp3()
+        {
+            // WebSocketを通したメッセージの送信
+            g_socket.send( JSON.stringify( { "message": "理解しました！" } ) );
+        }
+        
+        // 「うーん…」ボタンを押したときの処理
+        function onclickButton_tmp4()
+        {
+            // WebSocketを通したメッセージの送信
+            g_socket.send( JSON.stringify( { "message": "うーん…" } ) );
+        }
+        
+        // 「👍」ボタンを押したときの処理
+        function onclickButton_tmp5()
+        {
+            // WebSocketを通したメッセージの送信
+            g_socket.send( JSON.stringify( { "message": "👍" } ) );
+        }
+        
+        // 「👎」ボタンを押したときの処理
+        function onclickButton_tmp6()
+        {
+            // WebSocketを通したメッセージの送信
+            g_socket.send( JSON.stringify( { "message": "👎" } ) );
+        }
+        
+        // 「✋」ボタンを押したときの処理
+        function onclickButton_tmp7()
+        {
+            // WebSocketを通したメッセージの送信
+            g_socket.send( JSON.stringify( { "message": "✋" } ) );
+        }
+        
+        // 「👏」ボタンを押したときの処理
+        function onclickButton_tmp8()
+        {
+            // WebSocketを通したメッセージの送信
+            g_socket.send( JSON.stringify( { "message": "👏" } ) );
+        }
+        
+        // 「〇」ボタンを押したときの処理
+        function onclickButton_tmp9()
+        {
+            // サーバに"vote_ok"を送信
+            g_socket.send( JSON.stringify( { "data_type": "vote_ok" } ) );
+        }
+        
+        // 「×」ボタンを押したときの処理
+        function onclickButton_tmp10()
+        {
+            // サーバに"vote_ng"を送信
+            g_socket.send( JSON.stringify( { "data_type": "vote_ng" } ) );
+        }
+        
+        // 「△」ボタンを押したときの処理
+        function onclickButton_tmp11()
+        {
+            // サーバに"vote_cd"を送信
+            g_socket.send( JSON.stringify( { "data_type": "vote_cd" } ) );
+        }
+
+        // 「投票を開始／終了」ボタンを押したときの処理
+        function onclickButton_vote() {
+            // サーバに"vote"を送信
+            g_socket.send( JSON.stringify( { "data_type": "vote" } ) );
+        }
+        
+        //「司会者決定」ボタンを押した時の処理
+        function onclickButton_sikai(){
+            g_socket.send( JSON.stringify( { "data_type": "sikai" } ) );
+        }
+
+        // WebSocketからメッセージ受信時の処理
+        g_socket.onmessage = ( event ) =>
+        {
+            // 自身がまだ参加していないときは、無視。
+            if( !g_elementTextUserName.value )
+            {
+                return;
+            }
+
+            // テキストデータをJSONデータにデコード
+            let data = JSON.parse( event.data );
+
+            // メッセージの整形
+            //let strMessage = data["message"];
+            let strMessage = data["datetime"] + " - [" + data["username"] + "] " + data["message"];
+
+            log_data.push(strMessage + "\n");
+
+            // 拡散されたメッセージをメッセージリストに追加
+            let elementLi = document.createElement( "li" );
+            elementLi.textContent = strMessage;
+            g_elementListMessage.prepend( elementLi ); // リストの一番上に追加
+            //g_elementListMessage.append( elementLi );    // リストの一番下に追加
+        };
+
+        // WebSocketクローズ時の処理
+        g_socket.onclose = ( event ) =>
+        {
+            // ウェブページを閉じたとき以外のWebSocketクローズは想定外
+            console.error( "Unexpected : Chat socket closed." );
+        };
+
+        //log
+        function log_out(){
+            let blob = new Blob( log_data, {type: "text/plan"});
+            let link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'log.txt';
+            link.click();
+        }
+
+    </script>
+
+{% endblock %}
+<!--
+</body>
+
+</html>
+-->

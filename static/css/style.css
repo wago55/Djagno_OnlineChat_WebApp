@@ -1,0 +1,75 @@
+* {
+    font-family:sans-serif;
+}
+
+body {
+    margin: 10px;
+    padding: 10px;
+}
+
+p{
+    margin: 10px 30px;
+    padding: 10px 30px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin: 30px 20px;
+    position: relative;
+    padding: 0.25em 1em;
+    border-top: solid 2px black;
+    border-bottom: solid 2px black;
+    background-color: #ffe9a9;
+    font-weight: bold;
+  }
+
+  h1:before, h1:after {
+    content: '';
+    position: absolute;
+    top: -7px;
+    width: 2px;
+    height: -webkit-calc(100% + 14px);
+    height: calc(100% + 14px);
+    background-color: black;
+  }
+  h1:before {
+    left: 7px;
+  }
+  h1:after {
+    right: 7px;
+  }
+
+h2 {
+    font-size: 2rem;
+    margin: 30px 30% 10px 30px;
+    padding: 0px 0px 0px 20px;
+    background: linear-gradient(transparent 50%, darkcyan 85%);
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+/*#0d6efd*/
+
+/*#494949*/
+
+
+#div_container {
+  display: flex; /* 子要素をflex配置とする */
+  /*
+  flex-direction: column; /* 子要素のflex配置の方向は列方向（縦方向）
+  */
+}
+
+#div_join_screen {
+  display: flex; /* 子要素をflex配置とする */
+  /*
+  align-items: center; /*子要素を上下中央揃えとする。「display: flex」必要
+  */
+  z-index: 10;
+}
+
+#div_chat_screen {
+  display: none; /* 初期状態非表示 */
+}

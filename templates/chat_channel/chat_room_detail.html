@@ -1,0 +1,33 @@
+<!--
+    File Name		: delete_joinchatroom.html
+    Version		    : V1.1
+    Designer		: 松岡修平
+    Date			: 2021.06.15
+    Purpose       	: 部屋の参加者の情報を表示
+
+    Revision :
+    V1.0 : 松岡修平,2021.06.15
+-->
+{#{% extends "base.html" %}#}
+{% block content %}
+    <h2>部屋情報</h2>
+    <!--<h3>司会者は{{sikai.username}}</h3>-->
+    <table class ="table">
+        <tr>
+            <th>ID</th>
+            <th>ルームID</th>
+            <th>部屋名</th>
+            <th>名前</th>
+        </tr>   
+    {% for item in data %} 
+    <tr>
+        <td>{{item.id}}</td>
+        <td>{{item.room_id}}</td>
+        <td>{{item.room_name}}</td>
+        <td>{{item.username}}</td>
+        <td><a href="{% url 'chat_channel:delete_joinchatroom' item.id %}">削除</a></td>
+    </tr>
+    {% endfor %}
+{#    <a href="{% url 'chat_channel:chat_room_login' %}">チャットに戻る</a>#}
+    </table>
+{% endblock %}

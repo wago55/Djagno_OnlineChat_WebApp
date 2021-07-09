@@ -1,0 +1,23 @@
+<!--
+    File Name		: regist_user_failed.html
+    Version		    : V1.1
+    Designer		: 平澤巧望
+    Date			: 2021.06.10
+    Purpose       	: チャットルーム作成画面
+
+    Revision :
+    V1.0 : 平澤巧望, 2021.06.10
+-->
+
+{% extends "base.html" %}
+{% block content %}
+    <h2>チャットルーム作成</h2>
+    <p>
+        以下に必要事項を入力の上，［チャットルーム作成］をクリックしてください．
+    </p>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value = "チャットルーム作成">
+</form>
+{% endblock %}

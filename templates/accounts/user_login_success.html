@@ -1,0 +1,24 @@
+<!--
+    File Name		: user_login_success.html
+    Version		    : V1.1
+    Designer		: 平澤巧望
+    Date			: 2021.06.08
+    Purpose       	: ユーザ認証成功時に表示する画面
+
+    Revision :
+    V1.0 : 平澤巧望, 2021.06.08
+-->
+
+
+{% extends "base.html" %}
+{% block content %}
+    {% for login_user in object_list  %}
+        <h3 style="text-align:right">UserName: <b>{{ login_user.username }}</b> さん</h3>
+    {% endfor %}
+    <h2>ログイン成功</h2>
+    <p>
+        ログインに成功しました！<br>
+        すでに作成されているチャットルームに入室するには［チャットルーム入室］，<br>
+        チャットルームをこれから作成する場合は［チャットルーム作成］を上のメニューから選択してください．
+    </p>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+        <div>{{ message.message }}</div>
+        {% endfor %}
+    {% endif %}
+    <h3>掲示板一覧画面</h3>
+    <p><a class="navbar-brand" href="{% url 'chat:chat_room_create' %}">掲示板を新たに作成する</a></p>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>ルーム名</th>
+                <th>作成者</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for chat_room in object_list %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td><a href="{% url 'chat:send_chat' chatroom_id=chat_room.id %}">{{ chat_room.room_name }}</a></td>
+                {% if chat_room.username.id == user.id %}
+                    <td><a href="{% url 'chat:chat_room_update' pk=chat_room.id %}">{{ chat_room.username.username }}</a></td>
+                {% else %}
+                    <td>{{ chat_room.username.username }}</td>
+                {% endif %}
+{#                <td>{{ chat_room.username.username }}</td>#}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+    <h3>{{ chat_room.room_name }}</h3>
+    <button type="button", onclick="Button()">時間設定</button>
+    {% for chat in chat %}
+{#    <div class="col-1 offset-1">#}
+{#        {% if comment.user.picture %}#}
+{#            <img style="float:left" width="50px" height="50px" src="{{ comment.user.picture.url }}">#}
+{#        {% endif %}#}
+{#    </div>#}
+    <div class="col-8 offset-2">
+        <p>名前: {{ chat.user.username }}</p>
+        <p>{{ chat.chat | linebreaks }}</p>
+    </div>
+    <div class="col-10 offset-1">
+        <hr>
+    </div>
+    {% endfor %}
+    {% if user.is_authenticated %}
+    <div class="col-4 offset-7">
+        <form method="POST">
+            {% csrf_token %}
+            {{ send_chat_form.as_p }}
+       <input type="button" value="一時保存" id="save_chat" >
+       <input type="submit" value="コメント送信">
+       </form>
+    </div>
+    {% endif %}
+{% endblock %}
+{% block javascript %}
+<script>
+$("#save_chat").click(function(){
+    var chat = $("#id_chat").val()
+
+    $.ajax({
+        url: "{% url 'chat:save_chat' %}",
+        type: "GET",
+        data: {chat: chat, chatroom_id: "{{ chat_room.id }}"},
+        dataType: "json",
+        success: function(json){
+            if(json.message){
+                alert(json.message)
+            }
+        }
+    });
+});
+function Button() {
+    window.open("{% url 'chat:timer' %}", "new",'width=500, height=300')
+}
+</script>
+{% endblock %}
