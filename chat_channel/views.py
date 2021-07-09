@@ -9,6 +9,7 @@
 # V1.1 : 平澤巧望, 2021.06.12 チャットルーム認証機能に対応
 # V2.0 : 松岡修平, 2021.06.15 参加者と部屋情報の関係を登録
 # V2.1 : 高橋龍平, 2021.06.18 カウントダウン機能に対応
+# V2.2 : 平澤巧望, 2021.07.08 非ログイン時の不具合修正
 
 from django.shortcuts import render, redirect,  get_object_or_404
 from django.views.generic.list import ListView
@@ -23,6 +24,7 @@ from django.core.cache import cache
 from django.http import JsonResponse
 from django.contrib import messages
 from django.http import HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
 from . import forms
 import json
 import random
@@ -56,7 +58,7 @@ class Chat(TemplateView):
     """
 
 
-class LoginChatRoomView(FormView):
+class LoginChatRoomView(LoginRequiredMixin, FormView):
     template_name = "chat_channel/chat_room_login.html"
     form_class = LoginChatRoomForm
 
@@ -91,7 +93,7 @@ class LoginChatRoomFailedView(TemplateView):
     template_name = "chat_channel/chat_room_login_failed.html"
 
 
-class CreateChatRoomView(CreateView):
+class CreateChatRoomView(LoginRequiredMixin, CreateView):
     template_name = "chat_channel/chat_room_create.html"
     model = ChatRoomChannel
     form_class = CreateChatRoomForm

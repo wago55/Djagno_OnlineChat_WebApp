@@ -12,23 +12,20 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
-import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-from channels import staticfiles
-
 BASE_DIR = Path(__file__).resolve().parent.parent
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = ''
-
+SECRET_KEY = 'django-insecure-^7afl9)n+g9m5hg6zwczn1w7-wzd_$l-a6mhc7#19yd@g2)oz#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -53,9 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
-
 
 ROOT_URLCONF = 'online_discussion.urls'
 
@@ -81,27 +76,12 @@ WSGI_APPLICATION = 'online_discussion.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'name',
-        'USER': 'user',
-        'PASSWORD': '',
-        'HOST': 'host',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
-DATABASES['default'].update(db_from_env)
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -137,30 +117,13 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-# STATIC_URL = '/static/'
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+# staticSTATICFILES_DIRS = [ BASE_DIR / 'static']
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    BASE_DIR / 'static',
 )
-
-
-try:
-    from .local_settings import *
-except ImportError:
-    pass
-
-
-if not DEBUG:
-    SECRET_KEY = os.environ['SECRET_KEY']
-    import django_heroku
-    django_heroku.settings(locals())
-
-ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
-
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -171,20 +134,6 @@ ASGI_APPLICATION = 'online_discussion.asgi.application'
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            'hosts': [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
-        },
-        # "ROUTING": 'chat_channel.routing.websocket_urlpatterns',
+        'CONFIG': {'hosts': [('127.0.0.1', 6379)], },
     },
 }
-
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
-}
-
