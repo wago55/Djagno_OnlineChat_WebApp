@@ -1,0 +1,22 @@
+<!--
+    File Name		: 404.html
+    Version		    : V1.1
+    Designer		: 平澤巧望
+    Date			: 2021.07.08
+    Purpose       	: 404 PageNotFound
+
+    Revision :
+    V1.0 : 平澤巧望, 2021.07.08
+-->
+
+{% extends "base.html" %}
+{% block content %}
+    <h2>このページは利用できません（404 Not Found）</h2>
+    <p>
+        このページにはアクセスできません．URLを再度ご確認ください．<br>
+        ログインをしていない場合，上のメニューより［ログイン］を選択し，ログインを行ってください．
+    </p>
+    <center>
+        <font size = "4"><a href="{% url 'accounts:home' %}">== ホームに戻る ==</a></font>
+    </center>
+{% endblock %}
