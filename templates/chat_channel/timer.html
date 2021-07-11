@@ -1,3 +1,16 @@
+<!--
+    File Name		: timer.html
+    Version		    : V1.0
+    Designer		: 高橋龍平
+    Date			: 2021.06.15
+    Purpose       	: タイマー設定
+
+    Revision :
+    V1.0 : 高橋龍平, 2021.06.08
+    V1.1 : 高橋龍平, 2021.07.07 エラーの修正
+-->
+
+
 <html>
 <head>
 </head>
@@ -12,19 +25,20 @@
 <script>
 var PassSec=0;   // 秒数カウント用変数
 
-// 繰り返し処理の中身
+<!-- 繰り返し処理の中身 -->
 function showPassage() {
-   //PassSec = second + 60*mins;
-   if((PassSec=="")||(isNaN(PassSec){
+  <!-- 空白もしくは数字でないとき -->
+   if((PassSec=="")||(isNaN(PassSec))){
       alert('時間を設定してください。');
       stopShowing();
    }else {
-      PassSec--;   // カウントダウン
-      var Min = parseInt(PassSec / 60);  //秒を分に変換
-      var Sec = PassSec % 60;  //秒を計算
-      if (Min != 0) {  //分が0かどうかで表示変更
-         var msg = "残り時間 " + Min + "分" + Sec + "秒です。";   // 表示文作成
-         document.getElementById("PassageArea").innerHTML = msg;   // 表示更新
+      <!-- タイマー実行 -->
+      PassSec--;
+      var Min = parseInt(PassSec / 60);
+      var Sec = PassSec % 60;
+      if (Min != 0) {
+         var msg = "残り時間 " + Min + "分" + Sec + "秒です。";
+         document.getElementById("PassageArea").innerHTML = msg;
       } else {
          var msg = "残り時間 " + Sec + "秒です。";   // 表示文作成
          document.getElementById("PassageArea").innerHTML = msg;   // 表示更新
@@ -36,20 +50,19 @@ function showPassage() {
    }
 }
 
-// 繰り返し処理の開始
+<!-- 繰り返し処理の開始-->
 function startShowing() {
    var mins=window.prompt("分で設定して下さい。ex)1分30秒の場合->1.5と入力",5);
    PassSec = mins*60;
-   PassageID = setInterval('showPassage()',1000);   // タイマーをセット(1000ms間隔)
-   document.getElementById("startcount").disabled = true;   // 開始ボタンの無効化
+   PassageID = setInterval('showPassage()',1000);
+   document.getElementById("startcount").disabled = true;
 }
 
-// 繰り返し処理の中止
+<!-- 繰り返し処理の中止 -->
 function stopShowing() {
-  clearInterval( PassageID );   // タイマーのクリア
-  document.getElementById("startcount").disabled = false;   // 開始ボタンの有効化
-  document.getElementById("PassageArea").innerHTML = '(ここにカウントが表示されます)';   // 表示更新
-
+  clearInterval( PassageID );
+  document.getElementById("startcount").disabled = false;
+  document.getElementById("PassageArea").innerHTML = '(ここにカウントが表示されます)';
 }
 </script>
 </html>
