@@ -1,3 +1,16 @@
+/*
+File Name		: style.css
+Version	    : V1.1
+Designer		: 平澤巧望
+Date			  : 2021.06.01
+Purpose     : ページのデザインに関する設定
+
+Revision :
+V1.0 : 平澤巧望, 2021.06.01
+V1.1 : 平澤巧望, 2021.06.08, チャット機能への対応
+*/
+
+
 * {
     font-family:sans-serif;
 }

@@ -2,7 +2,7 @@
 # Version	    : V1.1
 # Designer		: 和合雅輝
 # Date			: 2021.06.08
-# Purpose      	: 
+# Purpose      	: ユーザ登録・ログインに関する各ページの設定
 
 # Revision :
 # V1.0 : 和合雅輝, 2021.06.08

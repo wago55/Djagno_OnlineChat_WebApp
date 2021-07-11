@@ -2,7 +2,7 @@
 # Version	    : V1.1
 # Designer		: 和合雅輝
 # Date			: 2021.06.08
-# Purpose       : 
+# Purpose       : チャットルームの登録・認証のためのフォームの定義
 
 # Revision :
 # V1.0 : 和合雅輝, 2021.06.08

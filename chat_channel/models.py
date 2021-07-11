@@ -1,5 +1,5 @@
 # File Name		: models.py
-# Version		: V1.1
+# Version		: V1.2
 # Designer		: 和合雅輝
 # Date			: 2021.06.08
 # Purpose       : チャット機能に関するデータモデルの設定
