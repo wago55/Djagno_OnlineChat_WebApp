@@ -1,8 +1,8 @@
 # File Name		: consumers.py
-# Version	    : V1.1
+# Version	    : V2.0
 # Designer		: 和合雅輝
 # Date			: 2021.06.08
-# Purpose      	:
+# Purpose      	: チャット機能に関する処理の記述
 #
 # # Revision :
 # V1.0 : 和合雅輝, 2021.06.08
