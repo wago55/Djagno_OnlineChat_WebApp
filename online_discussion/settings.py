@@ -1,3 +1,14 @@
+# File Name		: asgi.py
+# Version		: V1.0
+# Designer		: 和合雅輝
+# Date			: 2021.06.08
+# Purpose      	: asgi設定
+
+# Revision :
+# V1.0 : 和合雅輝, 2021.06.08
+# V1.1 : 和合雅輝, 2021.07.12
+
+
 """
 Django settings for online_discussion project.
 
@@ -31,7 +42,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEBUG = True
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,6 +55,7 @@ INSTALLED_APPS = [
     'bootstrap4',
 ]
 
+# ミドルウェア設定
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -56,9 +67,10 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-
+# ルートのパス設定
 ROOT_URLCONF = 'online_discussion.urls'
 
+# テンプレート設定
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -76,6 +88,7 @@ TEMPLATES = [
     },
 ]
 
+# wsgiの設定
 WSGI_APPLICATION = 'online_discussion.wsgi.application'
 
 # Database
@@ -88,6 +101,7 @@ WSGI_APPLICATION = 'online_discussion.wsgi.application'
 #     }
 # }
 
+# データベース設定
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -139,6 +153,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 # STATIC_URL = '/static/'
 
+# 静的ファイルの読み込み設定
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
@@ -146,18 +161,18 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-
+# 本番orローカル
 try:
     from .local_settings import *
 except ImportError:
     pass
-
 
 if not DEBUG:
     SECRET_KEY = os.environ['SECRET_KEY']
     import django_heroku
     django_heroku.settings(locals())
 
+# 許可ホスト設定
 ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
 
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -168,6 +183,7 @@ ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ASGI_APPLICATION = 'online_discussion.asgi.application'
 
+# channelsの設定
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
