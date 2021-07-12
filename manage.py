@@ -1,3 +1,13 @@
+# File Name		: manage.py
+# Version		: V1.0
+# Designer		: 和合雅輝
+# Date			: 2021.06.08
+# Purpose      	: manage.pyの設定 (Djangoのmigrateやrunserver等のコマンドを利用するためのスクリプト)
+
+# Revision :
+# V1.0 : 和合雅輝, 2021.06.08
+
+
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
 import os
