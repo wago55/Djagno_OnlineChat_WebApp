@@ -35,11 +35,11 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = ''
+SECRET_KEY = 'django-insecure-^7afl9)n+g9m5hg6zwczn1w7-wzd_$l-a6mhc7#19yd@g2)oz#'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # Application definition
 INSTALLED_APPS = [
@@ -153,7 +153,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 # STATIC_URL = '/static/'
 
-# 静的ファイルの読み込み設定
+# 静的ファイルの読み込み設定 ローカルでは157-162行までをコメントアウト
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
@@ -161,16 +161,22 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
+# ローカルではここのコメントアウトを外す
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = (
+#     BASE_DIR / 'static',
+# )
+
 # 本番orローカル
 try:
     from .local_settings import *
 except ImportError:
     pass
 
-if not DEBUG:
-    SECRET_KEY = os.environ['SECRET_KEY']
-    import django_heroku
-    django_heroku.settings(locals())
+# if not DEBUG:
+#     SECRET_KEY = os.environ['SECRET_KEY']
+#     import django_heroku
+#     django_heroku.settings(locals())
 
 # 許可ホスト設定
 ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
