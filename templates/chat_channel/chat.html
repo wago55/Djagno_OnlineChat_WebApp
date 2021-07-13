@@ -374,8 +374,13 @@
             let blob = new Blob( log_data, {type: "text/plan"});
             let link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = 'log.txt';
-            link.click();
+            if (window.confirm('チャット履歴を保存してもよろしいですか？')) {
+                link.download = 'log.txt';
+                link.click();
+                alert('チャット履歴の保存が完了しました')
+            }else{
+                alert('チャット履歴の保存をキャンセルしました')
+            }
         }
 
     </script>
